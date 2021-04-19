@@ -1,0 +1,187 @@
+﻿
+一.SQL语句
+1.SQL(Structure Query Language)概述
+SQL 是一种标准化的语言，它允许你在数据库上执行操作，如创建项目，查询内容，更新内容，并删除条目等操作：
+Create, Read, Update, and Delete 通常称为CRUD操作。
+
+二.SQL语句分类
+DDL（Data Definition Language）：数据定义语言，用来定义数据库对象：库、表、列等；
+DML（Data Manipulation Language）：数据操作语言，用来定义数据库记录（数据）增删改；
+DCL（Data Control Language）：数据控制语言，用来定义访问权限和安全级别；
+DQL（Data Query Language）：数据查询语言，用来查询记录（数据）查询。
+注意：① SQL命令不区分大小写（但为了区别命令，我一般使用大写）；
+② SQL语句已分号（;）结束；
+
+1.DDL：定义数据库的库、表、列等
+
+创建：create database 数据库名 【character set 编码方式】【 collate 排序规则】
+查看：show databases
+修改：alter database 数据库名 character set 编码方式
+删除：drop database 数据库名
+当前：Select database();
+切换： use 数据库名
+表：
+创建：CREATE TABLE 表名(
+列名1 数据类型 [约束],
+列名2 数据类型 [约束],
+列名n 数据类型 [约束]
+);
+查看： show tables;
+细节：show create table 表名;
+修改：alter table 表名 character set 编码方式
+改名：alter table 旧表名 rename 新表名;
+删除：drop table 表名;
+列：
+增加：alter table 表名 add 新列名 新的数据类型
+修改：alter table 表名 change 旧列名 新列名 新的数据类型
+alter table 表名 modify 旧列名 新列名 新的数据类型
+删除：alter table 表名 drop 列名
+
+
+2.DML：数据增删改
+注意：在mysql中，字符串类型和日期类型都要用单引号括起来；空值：null;
+
+（1）INSERT：插入数据
+insert into 表名(列名1，列名2) values(数值1，数值2),
+（数值1，数值2），
+（数值1，数值2）;
+给所有列添加数据时，可省略列名；
+如下：
+insert into student(name,number,age) values('张三',27020,16),('李四',27050,18);
+
+（2）UPDATA：修改数据
+UPDATE 表名 SET 列名1=列值1,列名2=列值2 ... WHERE 列名=值
+如下：
+UPDATE student set name='王五',number=22222,age=22 where age=16;
+
+（3）DELETE：删除数据
+DELETE from 表名 【WHERE 列名=值】
+如下：
+DELETE FROM student WHERE age=18;
+
+（4）运算符
+ (1)算术运算符:+，-，*，/(除法),求余(%)
+示例：
+5/2
+5%2
+2/5
+2%5
+ (2)赋值运算符:=
+ (3) 逻辑运算符：
+and(并且),or(或者),not（取非）
+作用:用于连接多个条件时使用
+ (4) 关系运算符：
+·  >,<,>=,<=,!=(不等于),=(等于),<>(不等于)
+
+3.DCL：定义权限
+（1）创建用户
+create user 用户名@指定ip identified by 密码;
+create user 用户名@客户端ip identified by 密码; 指定IP才能登陆
+create user 用户名@‘% ’ identified by 密码 任意IP均可登陆
+如下：
+CREATE USER hahahome.php?mod=space&uid=485241 IDENTIFIED BY '123';
+
+（2）用户授权
+grant 权限1,权限2,........,权限n on
+数据库名.* to 用户名@IP; 给指定用户授予指定指定数据库指定权限
+grant all on . to 用户名@IP 给指定用户授予所有数据库所有权限
+如下：
+grant select,insert,delete,create on firstdatabases.* to haha@localhost;
+
+（3）权限查询
+show grants for 用户名@IP;
+如下：
+show grants for haha@localhost;
+
+（4）撤销用户权限
+revoke 权限1,权限2,........,权限n on 数据库名.* from 用户名@IP;
+如下：
+revoke INSERT on firstdatabases.* from haha@localhost;
+
+（5）删除用户
+drop user 用户名@IP;
+如下：
+drop user haha@localhost;
+
+
+4.DQL：查询语句
+SELECT 要查询的列名称
+FROM 表名称
+WHERE 限定条件 /行条件/
+GROUP BY grouping_columns /对结果分组/
+HAVING condition /分组后的行条件/
+ORDER BY sorting_columns /对结果分组/
+LIMIT offset_start, row_count /结果限定/
+
+（1）简单查询
+查询所有列：
+SELECT * FROM 表名;
+查询指定列：
+select 列1,列2 from 表名；
+SELECT * FROM grade;
+
+（2）条件查询
+条件查询就是在查询时给出WHERE子句，在WHERE子句中可以使用如下运算符及关键字：
+=、!=、<>、<、<=、>、>=; BETWEEN…AND； IN(set)； IS NULL； AND；OR； NOT；
+SELECT studentno,score FROM result WHERE subjectid=8 AND score<60;
+
+（3）模糊查询
+当想查询姓名中包含a字母的学生时就需要使用模糊查询了。模糊查询需要使用关键字LIKE。
+语法: 列名 like '表达式' //表达式必须是字符串
+通配符:
+_(下划线): 任意一个字符
+%：任意0~n个字符
+SELECT * FROM student WHERE studentname LIKE '凌_';
+
+（4）字段控制查询
+<1>去除重复记录：
+SELECT DISTINCT 列 FROM 表;
+<2>两列取和:
+(comm,0)可以将null替换为0；
+SELECT ,列1+列2(comm,0) FROM 表;
+<3>添加别名（as可以省略）
+SELECT , 列1+列2(comm,0) AS total FROM 表;
+
+（5）排序
+order by 列名 asc/desc
+如下：
+SELECT * FROM student WHERE gradeid=1 ORDER BY borndate ASC;
+
+（6）聚合函数
+聚合函数是用来做纵向运算的函数：
+
+COUNT(列名)：统计指定列不为NULL的记录行数；
+SELECT COUNT(*) FROM student WHERE address LIKE '北京%';
+
+MAX(列名)：计算指定列的最大值，如果指定列是字符串类型，那么使用字符串排序运算；
+SELECT * FROM subject WHERE hour=(SELECT MAX(hour) FROM subject WHERE gradeid=2);
+
+MIN(列名)：计算指定列的最小值，如果指定列是字符串类型，那么使用字符串排序运算；
+SUM(列名)：计算指定列的数值和，如果指定列类型不是数值类型，那么计算结果为0；
+SELECT SUM(hour) FROM subject WHERE gradeid=2;
+
+AVG(列名)：计算指定列的平均值，如果指定列类型不是数值类型，那么计算结果为0；
+SELECT AVG(score) FROM result WHERE subjectid=8;
+
+（7）分组查询
+当需要分组查询时需要使用GROUP BY子句，例如查询每个部门的工资和，这说明要使用部分来分组。
+注意:如果查询语句中有分组操作，则select后面能添加的只能是聚合函数和被分组的列名
+SELECT subjectid,COUNT(*) FROM result GROUP BY subjectid;
+SELECT gradeid,sex,COUNT(*) FROM student GROUP BY gradeid,sex;
+
+（8）HAVING
+注：having与where的区别:
+1.having是在分组后对数据进行过滤,where是在分组前对数据进行过滤
+2.having后面可以使用分组函数(统计函数)
+where后面不可以使用分组函数。
+WHERE是对分组前记录的条件，如果某行记录没有满足WHERE子句的条件，那么这行记录不会参加分
+组；而HAVING是对分组后数据的约束。
+
+（9）LIMIT限制显示行数
+SELECT FROM emp LIMIT 开始下标, 显示行数;
+分页查询：
+limit (pageindex-1)pagesize,pagesize;
+pageIndex 页码值 pageSize 每页显示条数
+
+查询语句书写顺序：select – from- where- groupby- having- order by-limit
+查询语句执行顺序：from - where -group by -having - select - order by
