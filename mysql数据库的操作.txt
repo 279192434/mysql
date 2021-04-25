@@ -1,0 +1,21 @@
+数据库的操作
+
+#连接数据库
+mysql -h localhost -u 用户名 -p 密码
+#忘记mysql密码的情况下
+（1）进入Mysql的配置文件：vi /etc/my.cnf
+（2）在配置文件的末尾加上：skip-grant-tables
+（3）重启Mysql，然后直接mysql -u root -p直接登入。
+	service mysql restart
+
+#显示当前数据库
+show databases;
+
+#使用数据库，vos3000是数据库的名字
+use vos3000;
+
+#显示当前数据库的表
+show tables;
+
+#显示表结构,e_user是表名称
+describe e_user;
