@@ -32,7 +32,7 @@ select * from e_cdr_20210424 order by id limit 0,2;
 #查询vos3000数据库下的e_cdr_20210424表数据中的`callerip`,  `starttime`,  `endreason`列的数据
 SELECT  `callerip`,  `starttime`,  `endreason` FROM `vos3000`.`e_cdr_20210424`;
 #可以用小写字母，空格表名称一定不要写错
-select callerip,starttime,endreason from vos3000.e_cdr_20210424
+select callerip,starttime,endreason from vos3000.e_cdr_20210424;
 
 #去重查询vos3000数据库下e_cdr_20210424表中的callerip列、并且endreason列中的数据等于-9的数据
 select distinct callerip from vos3000.e_cdr_20210424 where endreason = -9;
