@@ -8,6 +8,9 @@ mysql -h localhost -u 用户名 -p 密码
 （3）重启Mysql，然后直接mysql -u root -p直接登入。
 	service mysql restart
 
+#查看全部的用户信息
+select user,host,password from mysql.user;
+
 #显示当前数据库
 show databases;
 
@@ -17,5 +20,19 @@ use vos3000;
 #显示当前数据库的表
 show tables;
 
-#显示表结构,e_user是表名称
-describe e_user;
+#显示表结构,e_cdr_20210424是表名称
+describe e_cdr_20210424;
+
+#查看表 e_cdr_20210424 中所有数据：
+select * from e_cdr_20210424;
+
+#查看表 e_cdr_20210424 中前2行数据：
+select * from e_cdr_20210424 order by id limit 0,2;
+
+#查询vos3000数据库下的e_cdr_20210424表数据中的`callerip`,  `starttime`,  `endreason`列的数据
+SELECT  `callerip`,  `starttime`,  `endreason` FROM `vos3000`.`e_cdr_20210424`;
+#可以用小写字母，空格表名称一定不要写错
+select callerip,starttime,endreason from vos3000.e_cdr_20210424
+
+#去重查询vos3000数据库下e_cdr_20210424表中的callerip列、并且endreason列中的数据等于-9的数据
+select distinct callerip from vos3000.e_cdr_20210424 where endreason = -9;
