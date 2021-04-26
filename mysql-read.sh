@@ -27,6 +27,7 @@ PW=123456
 #把查询到的内容输入到mysql.txt文本
 mysql -h$Host -u$User -p$PW -N <<EOF>>mysql.txt
     use vos3000;
+    #去重查询vos3000数据库下e_cdr_20210424表中的callerip列并且endreason列中的数据等于-9的数据
     select distinct callerip from vos3000.e_cdr_$TIME where endreason = -9;
     COMMIT;
 EOF
